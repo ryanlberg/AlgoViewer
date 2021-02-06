@@ -34,7 +34,7 @@ function runGraphType(graph, type, nodestart, nodeend) {
             const newrow = currow + neighbors[near][0];
             const newcol = curcol + neighbors[near][1];
             
-            if (isValid(newrow, newcol, ROWS, COLS) && !seen[newrow][newcol]){
+            if (isValid(newrow, newcol, ROWS, COLS) && !seen[newrow][newcol] && !graph[newrow][newcol].wall){
                 seen[newrow][newcol] = true;
                 graph[newrow][newcol].dist = getDistance(graph[newrow][newcol], graph[nodeend[0]][nodeend[1]])
                 frontier.push(graph[newrow][newcol])

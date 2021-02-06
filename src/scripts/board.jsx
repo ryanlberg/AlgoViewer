@@ -16,7 +16,8 @@ let NODEROWSTART = 0;
 let NODECOLSTART = 0;
 let NODEROWEND = ROWEND - 1;
 let NODECOLEND = COLEND -1;
-
+let lastseenrow = 0
+let lastseencol = 0
 window.onresize = () => { window.location.reload(); };
 
 export default class Board extends Component {
@@ -113,7 +114,7 @@ export default class Board extends Component {
     }
      
     handleDown = (i, j) => {
-      
+      console.log(i, j)
       if (i === NODEROWSTART && j === NODECOLSTART) {
         this.resetState();
         this.setState({
@@ -154,6 +155,13 @@ export default class Board extends Component {
           NODECOLEND = j;
           this.setState({grid: updatedGrid})
         }
+      } else if (downClicked) {
+        if (!(i === lastseenrow && j === lastseencol)) {
+          const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
+          this.setState({grid: updatedGrid})
+          lastseenrow = i
+          lastseencol = j
+        }
       }
       
     }
@@ -164,7 +172,7 @@ export default class Board extends Component {
       this.setState({
         downClick: false,
         startClicked: false,
-        endClicke: false
+        endClicked: false
       })
     }
    
@@ -185,12 +193,13 @@ export default class Board extends Component {
               return (
                 <div key={id}>
                   {row.map((square, rowkey) => {
-                    const {i, j, start, end} = square;
+                    const {i, j, start, wall, end} = square;
                     return (
                       <Square
                         key={rowkey}
                         row={i}
                         end={end}
+                        wall={wall}
                         start={start}
                         col={j}
                         handleDown ={this.handleDown}

@@ -8,6 +8,7 @@ export default class Square extends Component {
         col: props.col,
         start: props.start,
         end: props.end,
+        wall: props.wall,
         handleDown: props.handleClick,
         handleMove: props.handleMove,
         handleUp: props.handleUp,
@@ -22,6 +23,8 @@ export default class Square extends Component {
         classname = ' square-start'
       } else if (this.props.end) {
         classname = ' square-end'
+      } else if (this.props.wall) {
+        classname = ' square-wall'
       } else {}
       return (
           <div disabled={this.props.disabled} id={String(this.props.row) + "-" + String(this.props.col)} className={`square` + classname} onMouseDown={() => this.props.handleDown(this.props.row, this.props.col)} onMouseUp={() => this.props.handleUp()} onMouseMove={() => this.props.handleMove(this.props.row, this.props.col)}>
