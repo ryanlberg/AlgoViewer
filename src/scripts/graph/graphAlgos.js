@@ -1,10 +1,10 @@
-import {isValid, generateNeeded, getDistance } from "./utilities.js";
-import{ SearchStrategy } from "./graph/SearchStrategy"
+import {isValid, generateNeeded, getDistance } from "../utilities.js";
+import{ SearchStrategy } from "./SearchStrategy"
 
 const neighbors = [[-1, 0], [0, 1], [1,0], [0,-1]];
 
 function runGraphType(graph, type, nodestart, nodeend) {
-    let frontier = new SearchStrategy(type);
+    const frontier = new SearchStrategy(type);
     
     const ROWS = graph.length;
     const COLS = graph[0].length;
@@ -15,18 +15,19 @@ function runGraphType(graph, type, nodestart, nodeend) {
     seen[nodestart[0]][nodestart[1]] = true;
     
     const searched = []; //Order the nodes were searched in
-    let path = []; //The final path to get from start to end.
+    const path = []; //The final path to get from start to end.
     
     searched.push(graph[nodestart[0]][nodestart[1]])
     
     while (frontier.length() > 0) {
+        console.log("running graph")
         const cur = frontier.pop();
         const currow = cur.i
         const curcol = cur.j
         searched.push(graph[currow][curcol])
         if (currow == nodeend[0] && curcol == nodeend[1]) {
-            path = backTrack(cur)
-            return [searched, path];
+            const outpath = backTrack(cur)
+            return [searched, outpath];
         }
         for (var near= 0; near < neighbors.length; near++) {
             

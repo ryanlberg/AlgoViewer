@@ -86,10 +86,12 @@ function makeGrid(ROWEND, COLEND, NODEROWSTART, NODECOLSTART, NODEROWEND, NODECO
       let startNode = grid[oldstart[0]][oldstart[1]]
       const old = {
         ...startNode,
+        from: null,
         start: false,
       };
       const updateNode = {
         ...newnode,
+        from: null, 
         start: true,
       };
       out[i][j] = updateNode;
@@ -98,10 +100,12 @@ function makeGrid(ROWEND, COLEND, NODEROWSTART, NODECOLSTART, NODEROWEND, NODECO
       let endNode = grid[oldend[0]][oldend[1]]
       const old = {
         ...endNode,
+        from: null,
         end: false,
       };
       const updateNode = {
         ...newnode,
+        from: null, 
         end: true,
       };
       out[i][j] = updateNode;
