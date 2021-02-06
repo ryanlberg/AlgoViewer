@@ -29,7 +29,6 @@
 
   @keyframes bepath {
     from {background-color: orange;}
-    to {background-color: yellow;}
     to {background-color: teal;}
   }
 

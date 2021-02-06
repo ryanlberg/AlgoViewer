@@ -2,6 +2,9 @@
 //this is a terrible implementation of a minheap. 
 //It was implementnted this way for quickly testing..
 
+/**
+ * Poor implentation of a minHeap
+ */
 export class minHeap {
     constructor() {
         this.head = []

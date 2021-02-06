@@ -7,9 +7,9 @@ const NODESIZE = 34;
 
 const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE * 2 - 25) / NODESIZE);
 const GRID_WIDTH = Math.floor((window.innerWidth-NODESIZE*2) / NODESIZE);
-
 const ROWEND = GRID_HEIGHT;
 const COLEND = GRID_WIDTH;
+
 let NODEROWSTART = 0;
 let NODECOLSTART = 0;
 let NODEROWEND = ROWEND - 1;
@@ -17,8 +17,6 @@ let NODECOLEND = COLEND -1;
 
 let startClicked = false
 let endClicked = false
-
-
 
 window.onresize = () => { window.location.reload(); };
 
@@ -32,7 +30,8 @@ class Square extends Component {
       end: props.end,
       handleDown: props.handleClick,
       handleMove: props.handleMove,
-      handleUp: props.handleUp
+      handleUp: props.handleUp,
+      disabled: props.disabled
     };
   }
 
@@ -45,7 +44,7 @@ class Square extends Component {
       classname = ' square-end'
     } else {}
     return (
-        <div id={String(this.props.row) + "-" + String(this.props.col)} className={`square` + classname} onMouseDown={() => this.props.handleDown(this.props.row, this.props.col)} onMouseUp={() => this.props.handleUp()} onMouseMove={() => this.props.handleMove(this.props.row, this.props.col)}>
+        <div disabled={this.props.disabled} id={String(this.props.row) + "-" + String(this.props.col)} className={`square` + classname} onMouseDown={() => this.props.handleDown(this.props.row, this.props.col)} onMouseUp={() => this.props.handleUp()} onMouseMove={() => this.props.handleMove(this.props.row, this.props.col)}>
         </div>
     )  
     
@@ -56,17 +55,24 @@ export default class Board extends Component {
     constructor() {
       super();
       this.state = {
-        grid: []
+        grid: [],
+        running: false,
+        strategy: ""
       };
     }
 
     componentDidMount() {
       const grid = makeGrid(ROWEND, COLEND, NODEROWSTART, NODECOLSTART, NODEROWEND, NODECOLEND);
-      this.setState({ grid });
+      let selected = document.getElementById("selected").value;
+      this.setState({ 
+        grid: grid,
+        strategy: selected
+      });
     }
 
     resetState = () => {
       const grid = this.state.grid
+      let selected = document.getElementById("selected").value
       for(let i = 0; i < ROWEND; i++) {
         for(let j = 0; j < COLEND; j++) {
           //let cur = this.grid[i][j]
@@ -77,40 +83,52 @@ export default class Board extends Component {
           document.getElementById(id).className = 'square';
         }
       }
-      this.setState({grid })
+      this.setState({ 
+        strategy: selected
+      });
+      
+      
     }
 
-    runSelected = () =>{
-      this.resetState();
-      let selection = document.getElementById("selected");
-      let btn = document.getElementById("simulate");
-      btn.disable = true;
-      let searchOrder = runGraphType(this.state.grid, selection.value, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
+    runSelected = () => {
+      this.setState({running: true})
+      const searchOrder = runGraphType(this.state.grid, this.state.strategy, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
       this.animate(searchOrder[0], searchOrder[1]);
-
     }
+
+    enableButton = () => {
+      this.setState({running: false})
+    };
 
     animate = (searchOrder, path) => {
       for (let i = 0; i < searchOrder.length; i++) {
         setTimeout(() => {
           const curSquare = searchOrder[i];
           if (curSquare.end) {
-            for (let j = 0; j < path.length; j++) {
-              setTimeout(() => {
-                const pathSquare = path[j];
-                const id = String(pathSquare.i) + '-' + String(pathSquare.j);
-                document.getElementById(id).className = 'square square-path';
-              }, 60 * j);
-            }
+              this.animatePath(path);
           }
+        
           if (!curSquare.start && !curSquare.end) {
             const id = String(curSquare.i) + '-' + String(curSquare.j);
             document.getElementById(id).className = 'square square-seen';
           }
         }, 10 * i);
       }
+      this.enableButton();
     }
+    
+    
 
+    animatePath = (path) => {
+      for (let j = 0; j < path.length; j++) {
+        setTimeout(() => {
+          const pathSquare = path[j];
+          const id = String(pathSquare.i) + '-' + String(pathSquare.j);
+          document.getElementById(id).className = 'square square-path';
+        }, 60 * j);
+      }
+    }
+     
     handleDown = (i, j) => {
       if (i === NODEROWSTART && j === NODECOLSTART) {
         this.resetState();
@@ -118,19 +136,21 @@ export default class Board extends Component {
       } else if (i === NODEROWEND && j === NODECOLEND) {
         this.resetState();
         endClicked = true;
+      } else {
+        return
       }
     }
   
     handleMove = (i, j) => {
       if (startClicked) {
-        if(!(i === NODEROWSTART && j === NODECOLSTART)) {
+        if(!(i === NODEROWSTART && j === NODECOLSTART) && !this.state.running) {
           const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
           this.setState({grid: updatedGrid})
           NODEROWSTART = i;
           NODECOLSTART = j;
         }
       } else if (endClicked) {
-        if(!(i === NODEROWEND && j === NODECOLEND)){
+        if(!(i === NODEROWEND && j === NODECOLEND) && !this.state.running){
           const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
           this.setState({grid: updatedGrid})
           NODEROWEND = i;
@@ -144,22 +164,23 @@ export default class Board extends Component {
     handleUp = () => {
       startClicked = false;
       endClicked = false;
+      this.resetState();
     }
    
 
     render() {
-      const { grid } = this.state;  
+      //const { grid } = this.state;  
       return (
         
         <div>
-          <button id="simulate" onClick={ this.runSelected }> Lets See it!</button>
-          <select id="selected" onChange={ this.resetState }>
+          <button disabled={this.state.running} id="simulate" onClick={ this.runSelected }> Lets See it!</button>
+          <select disabled={this.state.running} id="selected" onChange={this.resetState }>
             <option value="BFS">Bfs</option>
             <option value="DFS">Dfs</option>
             <option value="ASTAR">Astar</option>
           </select>
           <div className='gridcol'>
-            {grid.map((row, id) => {
+            {this.state.grid.map((row, id) => {
               return (
                 <div key={id}>
                   {row.map((square, rowkey) => {
@@ -174,6 +195,7 @@ export default class Board extends Component {
                         handleDown ={this.handleDown}
                         handleMove = {this.handleMove}
                         handleUp = {this.handleUp}
+                        disabled = {this.props.running}
                         >
                         </Square>
                     );

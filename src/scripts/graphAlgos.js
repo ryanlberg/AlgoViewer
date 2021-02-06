@@ -1,17 +1,22 @@
 import {isValid, generateNeeded, getDistance } from "./utilities.js";
 import{ SearchStrategy } from "./graph/SearchStrategy"
 
-const around = [[-1, 0], [0, 1], [1,0], [0,-1]];
+const neighbors = [[-1, 0], [0, 1], [1,0], [0,-1]];
 
 function runGraphType(graph, type, nodestart, nodeend) {
     let frontier = new SearchStrategy(type);
+    
     const ROWS = graph.length;
     const COLS = graph[0].length;
+
     const seen = generateNeeded(ROWS, COLS, false);
+    
     frontier.push(graph[nodestart[0]][nodestart[1]]);
     seen[nodestart[0]][nodestart[1]] = true;
-    const searched = [];
-    let path = [];
+    
+    const searched = []; //Order the nodes were searched in
+    let path = []; //The final path to get from start to end.
+    
     searched.push(graph[nodestart[0]][nodestart[1]])
     
     while (frontier.length() > 0) {
@@ -23,9 +28,11 @@ function runGraphType(graph, type, nodestart, nodeend) {
             path = backTrack(cur)
             return [searched, path];
         }
-        for (var near= 0; near < around.length; near++) {
-            const newrow = currow + around[near][0];
-            const newcol = curcol + around[near][1];
+        for (var near= 0; near < neighbors.length; near++) {
+            
+            const newrow = currow + neighbors[near][0];
+            const newcol = curcol + neighbors[near][1];
+            
             if (isValid(newrow, newcol, ROWS, COLS) && !seen[newrow][newcol]){
                 seen[newrow][newcol] = true;
                 graph[newrow][newcol].dist = getDistance(graph[newrow][newcol], graph[nodeend[0]][nodeend[1]])
@@ -40,7 +47,12 @@ function runGraphType(graph, type, nodestart, nodeend) {
     return [searched, path];
 }
 
+/**
+ * @param {Object (Node)} node 
+ * @return {Array of Nodes} The path from start to end
+ */
 function backTrack(node) {
+    //Reconstructs the path form start to end not inclusive.
     const path = [];
     node = node.from;
     while (node.from !== null) {

@@ -1,5 +1,9 @@
 import {minHeap} from './Minheap';
 
+/**
+ * Acts as a strtagey pattern implementaton of a DataStructure for the graph
+ * algorithms.
+ */
 class SearchStrategy {
     constructor(type) {
         if (type === "BFS") {
@@ -30,7 +34,7 @@ class Dfs {
     constructor() {
         this.frontier = []
     }
-
+    
     pop() {
         return this.frontier.pop();
     }
