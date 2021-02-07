@@ -5,9 +5,9 @@ import Square from './square';
 import Navbar from './navbar.jsx';
 
 const NODESIZE = 34;
-const NAVBARSIZE = 100;
+//const NAVBARSIZE = 100;
 
-const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE * 2 - NAVBARSIZE) / NODESIZE);
+const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE * 2) / NODESIZE);
 const GRID_WIDTH = Math.floor((window.innerWidth-NODESIZE*2) / NODESIZE);
 const ROWEND = GRID_HEIGHT;
 const COLEND = GRID_WIDTH;
@@ -50,16 +50,19 @@ export default class Board extends Component {
 
     resetState = () => {
       if(!this.state.running) {
-        console.log("Reset State")
+        console.log("Reset State");
+        //const grid = makeGrid(ROWEND, COLEND, NODEROWSTART, NODECOLSTART, NODEROWEND, NODECOLEND);
         const selected = document.getElementById("selected").value
         for(let i = 0; i < ROWEND; i++) {
           for(let j = 0; j < COLEND; j++) {
-            //let cur = this.grid[i][j]
+            console.log(this.state.grid[i][j]);
             if (i === NODEROWSTART && j === NODECOLSTART || i === NODEROWEND && j === NODECOLEND) {
               continue;
             }
             const id = String(i) + '-' + String(j);
-            document.getElementById(id).className = 'square';
+            if (!this.state.grid[i][j].wall) {
+              document.getElementById(id).className = 'square';
+            }
           }
         }
         this.setState({ 
@@ -180,7 +183,6 @@ export default class Board extends Component {
     render() {
       //const { grid } = this.state;  
       return (
-        
         <div>
           <button disabled={this.state.running} id="simulate" onClick={ this.runSelected }> Lets See it!</button>
           <select disabled={this.state.running} id="selected" onChange={ this.resetState }>
@@ -214,7 +216,7 @@ export default class Board extends Component {
               );
             })}
           </div>
-          </div>
+        </div>
       )
   }
 }

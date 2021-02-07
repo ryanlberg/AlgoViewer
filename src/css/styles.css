@@ -21,7 +21,7 @@
   }
   
   .square-wall {
-    background-color: black;
+    background-color: slategray;
   }
 
   @keyframes beseen {
