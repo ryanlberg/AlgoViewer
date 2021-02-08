@@ -20,7 +20,7 @@ function runGraphType(graph, type, nodestart, nodeend) {
     searched.push(graph[nodestart[0]][nodestart[1]])
     
     while (frontier.length() > 0) {
-        console.log("running graph")
+        //console.log("running graph")
         const cur = frontier.pop();
         const currow = cur.i
         const curcol = cur.j

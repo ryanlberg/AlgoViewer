@@ -1,41 +1,29 @@
 import React, {Component} from 'react';
-
+import Button from 'react-bootstrap/Button'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 export default class Navbar extends Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
+      this.state = {
+        running: props.running,
+        runSelected: props.runSelected,
+        resetState: props.resetState
+      }
     }
 
     render () {
       return (
-      <div>
-        <nav class="navbar navbar-default">
-        <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Algorithms</a>
-        </div>
-    
-     
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li><a href="#">Link</a></li>
-              <li>
-                <select class="dropdown navbar-default container-fluid">
-                  <option>BFS</option>
-                  <option>DFS</option>
-                  <option>A*</option>
-                </select>
-              </li>
-            </ul>
+      <div className="Banner">
+        <div class="btn-group">
+          <h1>Try out some Algorthms!</h1>
+         <Button className="btn center" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
+         <select class="form-group" id="selected" disabled={this.props.running} id="selected" onChange={() => this.props.resetState()} >
+            <option value="BFS">BFS</option>
+            <option value="DFS">DFS</option>
+            <option value="ASTAR">Astar</option>
+          </select>
           </div>
-        </div>
-        </nav>
         </div>
       )
         

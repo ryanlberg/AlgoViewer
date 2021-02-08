@@ -5,9 +5,9 @@ import Square from './square';
 import Navbar from './navbar.jsx';
 
 const NODESIZE = 34;
-//const NAVBARSIZE = 100;
+const NAVBARSIZE = 75;
 
-const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE * 2) / NODESIZE);
+const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE * 2 - NAVBARSIZE) / NODESIZE);
 const GRID_WIDTH = Math.floor((window.innerWidth-NODESIZE*2) / NODESIZE);
 const ROWEND = GRID_HEIGHT;
 const COLEND = GRID_WIDTH;
@@ -16,8 +16,7 @@ let NODEROWSTART = 0;
 let NODECOLSTART = 0;
 let NODEROWEND = ROWEND - 1;
 let NODECOLEND = COLEND -1;
-let lastseenrow = 0
-let lastseencol = 0
+
 window.onresize = () => { window.location.reload(); };
 
 export default class Board extends Component {
@@ -42,20 +41,13 @@ export default class Board extends Component {
       });
     }
     
-    componentWillMount() {
-      clearInterval(this.pathTimer);
-      clearImmediate(this.animateTimer);
-      clearInterval(this.resetState)
-    }
-
     resetState = () => {
       if(!this.state.running) {
-        console.log("Reset State");
+        //console.log("Reset State");
         //const grid = makeGrid(ROWEND, COLEND, NODEROWSTART, NODECOLSTART, NODEROWEND, NODECOLEND);
         const selected = document.getElementById("selected").value
         for(let i = 0; i < ROWEND; i++) {
           for(let j = 0; j < COLEND; j++) {
-            console.log(this.state.grid[i][j]);
             if (i === NODEROWSTART && j === NODECOLSTART || i === NODEROWEND && j === NODECOLEND) {
               continue;
             }
@@ -74,21 +66,21 @@ export default class Board extends Component {
     }
 
     runSelected = () => {
-      console.log("Run Selected")
+      //console.log("Run Selected")
       this.setState({running: true})
       const searchOrder = runGraphType(this.state.grid, this.state.strategy, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
       this.animate(searchOrder[0], searchOrder[1]);
     }
 
     enableButton = () => {
-      console.log("Enable Button")
+      //console.log("Enable Button")
       this.setState({running: false})
     };
 
     animate = (searchOrder, path) => {
       for (let i = 0; i < searchOrder.length; i++) {
         this.animateTimer = setTimeout(() => {
-          console.log("animating frontier")
+          //console.log("animating frontier")
           const curSquare = searchOrder[i];
           if (curSquare.end) {
               this.animatePath(path);
@@ -108,16 +100,15 @@ export default class Board extends Component {
     animatePath = (path) => {
       for (let j = 0; j < path.length; j++) {
         this.pathTimer = setTimeout(() => {
-          console.log("animating Path")
+          //console.log("animating Path")
           const pathSquare = path[j];
           const id = String(pathSquare.i) + '-' + String(pathSquare.j);
           document.getElementById(id).className = 'square square-path';
-        }, 60 * j);
+        }, 20 * j);
       }
     }
      
     handleDown = (i, j) => {
-      console.log(i, j)
       if (i === NODEROWSTART && j === NODECOLSTART) {
         this.resetState();
         this.setState({
@@ -132,14 +123,17 @@ export default class Board extends Component {
         })
         
       } else {
-        this.setState({
-          downClick: true
-        })
-      }
+          const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, this.state.startClicked, this.state.endClicked)
+          this.setState({
+            grid: updatedGrid,
+            downClick: true
+          })
+        }
+
     }
   
     handleMove = (i, j) => {
-      console.log("handling Move")
+      //console.log("handling Move")
       const downClicked = this.state.downClick;
       const startClicked = this.state.startClicked;
       const endClicked = this.state.endClicked;
@@ -152,26 +146,18 @@ export default class Board extends Component {
           
         }
       } else if (downClicked && endClicked) {
-        if(!(i === NODEROWEND && j === NODECOLEND) && !this.state.running){
-          const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
-          NODEROWEND = i;
-          NODECOLEND = j;
-          this.setState({grid: updatedGrid})
-        }
-      } else if (downClicked) {
-        if (!(i === lastseenrow && j === lastseencol)) {
-          const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
-          this.setState({grid: updatedGrid})
-          lastseenrow = i
-          lastseencol = j
-        }
+          if(!(i === NODEROWEND && j === NODECOLEND)  && !this.state.running){
+            const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
+            NODEROWEND = i;
+            NODECOLEND = j;
+            this.setState({grid: updatedGrid})
+          }
       }
-      
     }
   
   
     handleUp = () => {
-      console.log("handling up")
+      //console.log("handling up")
       this.setState({
         downClick: false,
         startClicked: false,
@@ -184,12 +170,7 @@ export default class Board extends Component {
       //const { grid } = this.state;  
       return (
         <div>
-          <button disabled={this.state.running} id="simulate" onClick={ this.runSelected }> Lets See it!</button>
-          <select disabled={this.state.running} id="selected" onChange={ this.resetState }>
-            <option value="BFS">Bfs</option>
-            <option value="DFS">Dfs</option>
-            <option value="ASTAR">Astar</option>
-          </select>
+         <Navbar running={this.props.running} runSelected={this.runSelected} resetState={this.resetState}></Navbar>
           <div className='gridcol'>
             {this.state.grid.map((row, id) => {
               return (
