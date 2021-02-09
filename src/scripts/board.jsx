@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { runGraphType } from './graph/graphAlgos';
 import { makeGrid, generateGridWithNewNode} from './utilities';
+import { mazify } from './maze/maze'
 import Square from './square';
 import MyNavbar from './navbar.jsx';
 import SubBanner from './subbanner.jsx';
@@ -64,7 +65,7 @@ export default class Board extends Component {
 
     runSelected = () => {
       //console.log("Run Selected")
-      this.resetState(this.state.strategy)
+      //this.resetState(this.state.strategy)
       this.setState({running: true})
       const searchOrder = runGraphType(this.state.grid, this.state.strategy, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
       this.animate(searchOrder[0], searchOrder[1]);
@@ -153,7 +154,6 @@ export default class Board extends Component {
       }
     }
   
-  
     handleUp = () => {
       //console.log("handling up")
       this.setState({
@@ -162,13 +162,17 @@ export default class Board extends Component {
         endClicked: false
       })
     }
-   
 
+    mazify = () => {
+      mazify(this.state.grid);
+      console.log("you're doin it.");
+    }
+   
     render() {
       //const { grid } = this.state;  
       return (
         <div>
-         <MyNavbar running={this.state.running} runSelected={this.runSelected} resetState={this.resetState}></MyNavbar>
+         <MyNavbar running={this.state.running} runSelected={this.runSelected} resetState={this.resetState} mazify={this.mazify}></MyNavbar>
           <SubBanner selected={this.state.strategy}></SubBanner>
           <div className='gridcol'>
             {this.state.grid.map((row, id) => {
