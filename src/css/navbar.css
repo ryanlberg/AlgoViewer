@@ -1,0 +1,19 @@
+.Banner {
+    width:100%;
+    background-color: orangered;
+    text-align: left;
+    height: 75px;
+}
+
+.block {
+    height: 100px;
+}
+
+.btn {
+    margin-left: 10px;
+}
+.center {
+    height: 50px;
+    text-align: left;
+    background-color: blue;
+}

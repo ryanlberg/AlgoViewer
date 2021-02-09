@@ -1,13 +1,18 @@
 import {minHeap} from './Minheap';
 
+/**
+ * Acts as a strtagey pattern implementaton of a Data structure implementation
+ *  for the graph algorithms.
+ */
+
 class SearchStrategy {
     constructor(type) {
         if (type === "BFS") {
-            this.g = new Bfs();
+            this.g = new BfsStrategy();
         } else if (type === "DFS") {
-            this.g = new Dfs();
+            this.g = new DfsStrategy();
         } else if (type === "ASTAR") {
-            this.g = new Astar();
+            this.g = new AstarStrategy();
         } else {
             this.g = null
         }
@@ -26,13 +31,14 @@ class SearchStrategy {
     }
 }
 
-class Dfs {
+class DfsStrategy {
     constructor() {
         this.frontier = []
     }
 
     pop() {
-        return this.frontier.pop();
+        if (this.length() > 0) {return this.frontier.pop();}
+        return null;
     }
 
     push(item) {
@@ -44,13 +50,14 @@ class Dfs {
     }
 }
 
-class Bfs {
+class BfsStrategy {
     constructor() {
         this.frontier = [];
     }
 
     pop() {
-        return this.frontier.shift();
+        if (this.length() > 0) {return this.frontier.shift();}
+        return null;
     }
 
     push(item) {
@@ -62,13 +69,14 @@ class Bfs {
     }
 }
 
-class Astar {
+class AstarStrategy {
     constructor() {
         this.frontier = new minHeap();
     }
 
     pop() {
-        return this.frontier.pop();
+        if (this.length() > 0) {return this.frontier.pop()};
+        return null;
     }
 
     push(item) {

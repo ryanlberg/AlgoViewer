@@ -1,42 +1,41 @@
 import React, {Component} from 'react';
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import Dropdown from 'react-bootstrap/Dropdown'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 
 
-export default class Navbar extends Component {
-    constructor() {
-      super();
+export default class MyNavbar extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        running: props.running,
+        runSelected: props.runSelected,
+        resetState: props.resetState
+      }
     }
 
     render () {
       return (
-      <div>
-        <nav class="navbar navbar-default">
-        <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Algorithms</a>
-        </div>
-    
-     
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li><a href="#">Link</a></li>
-              <li>
-                <select class="dropdown navbar-default container-fluid">
-                  <option>BFS</option>
-                  <option>DFS</option>
-                  <option>A*</option>
-                </select>
-              </li>
-            </ul>
-          </div>
-        </div>
-        </nav>
-        </div>
+        
+      <Navbar bg="dark" variant="dark">
+        <Navbar.Brand href="#home">AlgoView</Navbar.Brand>
+        <Nav>
+          <Dropdown className="btn-grup " as={ButtonGroup}>
+            <Button className='btn btn-info' variant="success">Choose an Algorithm!</Button>
+
+            <Dropdown.Toggle className='btn-info'  id="dropdown-split-basic" />
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => this.state.resetState("BFS")}>BFS</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("DFS")}>DFS</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("ASTAR")}>ASTAR</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Button className="btn-info" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
+          </Nav>
+      </Navbar>
       )
         
     }
