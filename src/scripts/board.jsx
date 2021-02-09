@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { runGraphType } from './graph/graphAlgos';
 import { makeGrid, generateGridWithNewNode} from './utilities';
 import Square from './square';
-import Navbar from './navbar.jsx';
+import MyNavbar from './navbar.jsx';
 
 const NODESIZE = 34;
 const NAVBARSIZE = 75;
@@ -170,7 +170,7 @@ export default class Board extends Component {
       //const { grid } = this.state;  
       return (
         <div>
-         <Navbar running={this.props.running} runSelected={this.runSelected} resetState={this.resetState}></Navbar>
+         <MyNavbar running={this.props.running} runSelected={this.runSelected} resetState={this.resetState}></MyNavbar>
           <div className='gridcol'>
             {this.state.grid.map((row, id) => {
               return (

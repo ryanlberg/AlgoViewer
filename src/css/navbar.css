@@ -11,9 +11,5 @@
 .center {
     height: 50px;
     text-align: left;
-    margin: ;
-}
-
-.left {
-    margin: auto auto 0;
+    background-color: blue;
 }
