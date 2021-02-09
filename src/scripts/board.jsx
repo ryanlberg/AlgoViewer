@@ -3,6 +3,7 @@ import { runGraphType } from './graph/graphAlgos';
 import { makeGrid, generateGridWithNewNode} from './utilities';
 import Square from './square';
 import MyNavbar from './navbar.jsx';
+import SubBanner from './subbanner.jsx';
 
 const NODESIZE = 34;
 const NAVBARSIZE = 75;
@@ -28,24 +29,20 @@ export default class Board extends Component {
         downClick: false,
         startClicked: false,
         endclicked: false,
-        strategy: ""
+        strategy: "BFS"
       };
     }
 
     componentDidMount() {
       const grid = makeGrid(ROWEND, COLEND, NODEROWSTART, NODECOLSTART, NODEROWEND, NODECOLEND);
-      const selected = document.getElementById("selected").value;
       this.setState({ 
         grid: grid,
-        strategy: selected
       });
     }
     
-    resetState = () => {
+    resetState = (algo) => {
       if(!this.state.running) {
-        //console.log("Reset State");
-        //const grid = makeGrid(ROWEND, COLEND, NODEROWSTART, NODECOLSTART, NODEROWEND, NODECOLEND);
-        const selected = document.getElementById("selected").value
+      
         for(let i = 0; i < ROWEND; i++) {
           for(let j = 0; j < COLEND; j++) {
             if (i === NODEROWSTART && j === NODECOLSTART || i === NODEROWEND && j === NODECOLEND) {
@@ -58,7 +55,7 @@ export default class Board extends Component {
           }
         }
         this.setState({ 
-          strategy: selected
+          strategy: algo
         });
     }
       
@@ -67,6 +64,7 @@ export default class Board extends Component {
 
     runSelected = () => {
       //console.log("Run Selected")
+      this.resetState(this.state.strategy)
       this.setState({running: true})
       const searchOrder = runGraphType(this.state.grid, this.state.strategy, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
       this.animate(searchOrder[0], searchOrder[1]);
@@ -170,7 +168,8 @@ export default class Board extends Component {
       //const { grid } = this.state;  
       return (
         <div>
-         <MyNavbar running={this.props.running} runSelected={this.runSelected} resetState={this.resetState}></MyNavbar>
+         <MyNavbar running={this.state.running} runSelected={this.runSelected} resetState={this.resetState}></MyNavbar>
+          <SubBanner selected={this.state.strategy}></SubBanner>
           <div className='gridcol'>
             {this.state.grid.map((row, id) => {
               return (

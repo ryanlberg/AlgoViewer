@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+
 
 export default class MyNavbar extends Component {
     constructor(props) {
@@ -19,28 +21,21 @@ export default class MyNavbar extends Component {
         
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#home">AlgoView</Navbar.Brand>
-        <Nav className="mr-auto">
-          <select className="btn center" id="selected" disabled={this.props.running} id="selected" onChange={() => this.props.resetState()} >
-            <option value="BFS">BFS</option>
-            <option value="DFS">DFS</option>
-            <option value="ASTAR">Astar</option>
-          </select>
-          <Button className="btn" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
-        </Nav>
+        <Nav>
+          <Dropdown className="btn-grup " as={ButtonGroup}>
+            <Button className='btn btn-info' variant="success">Choose an Algorithm!</Button>
+
+            <Dropdown.Toggle className='btn-info'  id="dropdown-split-basic" />
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => this.state.resetState("BFS")}>BFS</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("DFS")}>DFS</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("ASTAR")}>ASTAR</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Button className="btn-info" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
+          </Nav>
       </Navbar>
-        /*
-      <div className="Banner">
-        <div class="btn-group">
-          <h1>Try out some Algorthms!</h1>
-         <Button className="btn center" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
-         <select class="form-group" id="selected" disabled={this.props.running} id="selected" onChange={() => this.props.resetState()} >
-            <option value="BFS">BFS</option>
-            <option value="DFS">DFS</option>
-            <option value="ASTAR">Astar</option>
-          </select>
-          </div>
-        </div>
-        */
       )
         
     }

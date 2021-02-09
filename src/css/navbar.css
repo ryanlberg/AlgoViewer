@@ -8,6 +8,10 @@
 .block {
     height: 100px;
 }
+
+.btn {
+    margin-left: 10px;
+}
 .center {
     height: 50px;
     text-align: left;
