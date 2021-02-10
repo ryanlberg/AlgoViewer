@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { runGraphType } from './graph/graphAlgos';
 import { makeGrid, generateGridWithNewNode} from './utilities';
-import { mazify } from './maze/maze'
+import { Maze } from './maze/maze'
 import Square from './square';
 import MyNavbar from './navbar.jsx';
 import SubBanner from './subbanner.jsx';
@@ -64,8 +64,7 @@ export default class Board extends Component {
     }
 
     runSelected = () => {
-      //console.log("Run Selected")
-      //this.resetState(this.state.strategy)
+      this.resetState(this.state.strategy)
       this.setState({running: true})
       const searchOrder = runGraphType(this.state.grid, this.state.strategy, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
       this.animate(searchOrder[0], searchOrder[1]);
@@ -99,7 +98,6 @@ export default class Board extends Component {
     animatePath = (path) => {
       for (let j = 0; j < path.length; j++) {
         this.pathTimer = setTimeout(() => {
-          //console.log("animating Path")
           const pathSquare = path[j];
           const id = String(pathSquare.i) + '-' + String(pathSquare.j);
           document.getElementById(id).className = 'square square-path';
@@ -109,13 +107,13 @@ export default class Board extends Component {
      
     handleDown = (i, j) => {
       if (i === NODEROWSTART && j === NODECOLSTART) {
-        this.resetState();
+        this.resetState(this.state.strategy);
         this.setState({
           downClick: true,
           startClicked: true
         })
       } else if (i === NODEROWEND && j === NODECOLEND) {
-        this.resetState();
+        this.resetState(this.state.strategy);
         this.setState({
           downClick: true,
           endClicked: true
@@ -141,7 +139,9 @@ export default class Board extends Component {
           const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked);
           NODEROWSTART = i;
           NODECOLSTART = j;
-          this.setState({grid: updatedGrid})
+          this.setState({
+            grid: updatedGrid,
+          })
           
         }
       } else if (downClicked && endClicked) {
@@ -149,7 +149,10 @@ export default class Board extends Component {
             const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
             NODEROWEND = i;
             NODECOLEND = j;
-            this.setState({grid: updatedGrid})
+            this.setState({
+              grid: updatedGrid,
+              strategy: this.state.Strategy
+            })
           }
       }
     }
@@ -159,13 +162,17 @@ export default class Board extends Component {
       this.setState({
         downClick: false,
         startClicked: false,
-        endClicked: false
+        endClicked: false,
+        strategy: this.state.strategy
       })
     }
 
     mazify = () => {
-      mazify(this.state.grid);
-      console.log("you're doin it.");
+      this.resetState(this.state.strategy);
+      let maze = new Maze(this.state.grid, "vertical").getMaze();
+      this.setState({
+        grid: maze,
+      })
     }
    
     render() {
