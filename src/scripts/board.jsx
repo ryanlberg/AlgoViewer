@@ -65,7 +65,7 @@ export default class Board extends Component {
 
     runSelected = () => {
       this.resetState(this.state.strategy)
-      this.setState({running: true})
+      //this.setState({running: true})
       const searchOrder = runGraphType(this.state.grid, this.state.strategy, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
       this.animate(searchOrder[0], searchOrder[1]);
     }
