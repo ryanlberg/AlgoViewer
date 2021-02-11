@@ -35,7 +35,17 @@ export default class MyNavbar extends Component {
             </Dropdown.Menu>
           </Dropdown>
           <Button className="btn-info" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
-          <Button className="btn-info" disabled={this.props.running} id='maxbutton' onClick={() => this.props.mazify()}>Make a Maze</Button>
+          <Dropdown className="btn-grup " as={ButtonGroup}>
+            <Button className='btn btn-info' variant="success">Maze Type!</Button>
+
+            <Dropdown.Toggle className='btn-info'  id="dropdown-split-basic" />
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => this.state.mazify("vertical")}>Vertical Split</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.mazify("horizontal")}>Horizontal Split</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.mazify("random")}>Random Maze</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
           </Nav>
       </Navbar>
       )

@@ -167,9 +167,9 @@ export default class Board extends Component {
       })
     }
 
-    mazify = () => {
+    mazify = (type) => {
       this.resetState(this.state.strategy);
-      let maze = new Maze(this.state.grid, "vertical").getMaze();
+      let maze = new Maze(this.state.grid, type).getMaze();
       this.setState({
         grid: maze,
       })
