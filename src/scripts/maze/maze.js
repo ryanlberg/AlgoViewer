@@ -2,7 +2,7 @@ class Maze {
     
     constructor(grid, type) {
         this.maze = null;
-        if (type === "horizontal" || this.type === "vertical") {
+        if (type === "horizontal" || type === "vertical") {
             this.maze = new HorizontalVerticalMaze(grid, type)
         } else {
             this.maze = new RandomMaze(grid)
@@ -63,7 +63,6 @@ class HorizontalVerticalMaze {
                 let midWidth = Math.floor((lowWidth+highWidth)/2);
                 let topRandom = Math.floor(Math.random() * (midWidth - lowWidth)) + lowWidth;
                 let botRandom = Math.floor(Math.random() * (highWidth - midWidth)) + midWidth; 
-                console.log(topRandom, botRandom);
                 this.grid[mid][topRandom].wall = false;
                 this.grid[mid][botRandom].wall = false;
 

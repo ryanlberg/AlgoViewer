@@ -71,14 +71,12 @@ export default class Board extends Component {
     }
 
     enableButton = () => {
-      //console.log("Enable Button")
       this.setState({running: false})
     };
 
     animate = (searchOrder, path) => {
       for (let i = 0; i < searchOrder.length; i++) {
         this.animateTimer = setTimeout(() => {
-          //console.log("animating frontier")
           const curSquare = searchOrder[i];
           if (curSquare.end) {
               this.animatePath(path);
@@ -151,7 +149,6 @@ export default class Board extends Component {
             NODECOLEND = j;
             this.setState({
               grid: updatedGrid,
-              strategy: this.state.Strategy
             })
           }
       }
