@@ -23,13 +23,13 @@ export default class Square extends Component {
       let cls = '';
       if (this.props.start) {
         classname = ' square-start';
-        cls = 'glyphicon glyphicon-play';
+        cls = 'glyphicon glyphicon-play-circle';
       } else if (this.props.end) {
         classname = ' square-end stop'
         cls = 'glyphicon glyphicon-stop'
       } else if (this.props.wall) {
         classname = ' square-wall'
-        cls = 'glyphicon glyphicon-hi'
+        cls = ''
       } else {}
       return (
           <div disabled={this.props.disabled} id={String(this.props.row) + "-" + String(this.props.col)} className={`square` + classname} onMouseDown={() => this.props.handleDown(this.props.row, this.props.col)} onMouseUp={() => this.props.handleUp()} onMouseMove={() => this.props.handleMove(this.props.row, this.props.col)}>

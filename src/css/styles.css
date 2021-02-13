@@ -1,5 +1,5 @@
 .square {
-    outline: 1px solid gray;
+    outline: .5px solid gray;
     display: inline-block;
     background-color: white;
     margin-top: -4px;
@@ -9,8 +9,10 @@
   }
   
   .glyphicon {
-    font-size: 2.1vw;
+    font-size: 2.45vw;
     margin: 0 auto;
+    margin-top: -4px;
+    display: inline-block;
   }
 
   .gridcol {

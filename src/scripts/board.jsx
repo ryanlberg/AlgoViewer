@@ -98,7 +98,7 @@ export default class Board extends Component {
         this.pathTimer = setTimeout(() => {
           const pathSquare = path[j];
           const id = String(pathSquare.i) + '-' + String(pathSquare.j);
-          document.getElementById(id).className = 'square square-path';
+          document.getElementById(id).className = 'square square-path glyphicon glyphicon-certificate';
         }, 20 * j);
       }
     }
