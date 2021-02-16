@@ -21,10 +21,10 @@ export default class MyNavbar extends Component {
       return (
         
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">AlgoView</Navbar.Brand>
+        <div className="navbar-brand-center">AlgoView</div>
         <Nav>
-          <Dropdown className="btn-grup " as={ButtonGroup}>
-            <Button className='btn btn-info' variant="success">Choose an Algorithm!</Button>
+          <Dropdown className="btn" as={ButtonGroup}>
+            <Button className='btn-info'>Choose an Algorithm!</Button>
 
             <Dropdown.Toggle className='btn-info'  id="dropdown-split-basic" />
 
@@ -34,9 +34,8 @@ export default class MyNavbar extends Component {
               <Dropdown.Item onClick={() => this.state.resetState("ASTAR")}>ASTAR</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Button className="btn-info" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
-          <Dropdown className="btn-grup " as={ButtonGroup}>
-            <Button className='btn btn-info' variant="success">Maze Type!</Button>
+          <Dropdown className="btn" as={ButtonGroup}>
+            <Button className='btn-info' variant="success">Maze Type!</Button>
 
             <Dropdown.Toggle className='btn-info'  id="dropdown-split-basic" />
 
@@ -46,6 +45,8 @@ export default class MyNavbar extends Component {
               <Dropdown.Item onClick={() => this.state.mazify("random")}>Random Maze</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+          <Button className="btn-info" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
+          
           </Nav>
       </Navbar>
       )

@@ -7,9 +7,16 @@
     width: 34px;
   }
   
+
   .glyphicon {
-    display: inline-block;
-    vertical-align: middle;
+    height: 34px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    padding: 0px;
+    position: inherit;
+    overflow: hidden;
+    
   }
 
   .gridcol {
