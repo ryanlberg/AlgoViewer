@@ -13,7 +13,6 @@ export default class Square extends Component {
         handleDown: props.handleClick,
         handleMove: props.handleMove,
         handleUp: props.handleUp,
-        disabled: props.disabled
       };
     }
   
@@ -32,7 +31,7 @@ export default class Square extends Component {
         cls = 'glyphicon'
       } else {}
       return (
-          <div disabled={this.props.disabled} id={String(this.props.row) + "-" + String(this.props.col)} className={`square` + classname} onMouseDown={() => this.props.handleDown(this.props.row, this.props.col)} onMouseUp={() => this.props.handleUp()} onMouseMove={() => this.props.handleMove(this.props.row, this.props.col)}>
+          <div id={String(this.props.row) + "-" + String(this.props.col)} className={`square` + classname} onMouseDown={() => this.props.handleDown(this.props.row, this.props.col)} onMouseUp={() => this.props.handleUp()} onMouseMove={() => this.props.handleMove(this.props.row, this.props.col)}>
             <div className={cls}></div>
           </div>
       )  

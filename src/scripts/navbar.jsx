@@ -10,7 +10,6 @@ export default class MyNavbar extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        running: props.running,
         runSelected: props.runSelected,
         resetState: props.resetState,
         mazify: props.mazify
@@ -45,7 +44,7 @@ export default class MyNavbar extends Component {
               <Dropdown.Item onClick={() => this.state.mazify("random")}>Random Maze</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Button className="btn-info" disabled={this.props.running} id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
+          <Button className="btn-info" id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
           
           </Nav>
       </Navbar>
