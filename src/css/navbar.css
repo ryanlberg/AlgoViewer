@@ -5,6 +5,13 @@
     height: 75px;
 }
 
+.navbar-brand-center {
+    text-align: center;
+    float: none;
+    font-size: 30px;
+    color: white;
+    
+}
 .block {
     height: 100px;
 }
@@ -13,7 +20,6 @@
     margin-left: 10px;
 }
 .center {
-    height: 50px;
-    text-align: left;
-    background-color: blue;
+    
+    text-align: middle;
 }
