@@ -1,8 +1,15 @@
 import {isValid, generateNeeded, getDistance } from "../utilities.js";
-import{ SearchStrategy } from "./SearchStrategy"
+import { SearchStrategy } from "./SearchStrategy"
 
 const neighbors = [[-1, 0], [0, 1], [1,0], [0,-1]];
 
+/**
+ * @param {Object (Graph), } grid
+ * @param {String} type
+ * @param {Object (node)} nodestart
+ * @param {Object (node)} nodeend 
+ * @return {Array of Nodes} The path from start to end
+ */
 function runGraphType(graph, type, nodestart, nodeend) {
     const frontier = new SearchStrategy(type);
     
@@ -51,6 +58,7 @@ function runGraphType(graph, type, nodestart, nodeend) {
  * @param {Object (Node)} node 
  * @return {Array of Nodes} The path from start to end
  */
+
 function backTrack(node) {
     //Reconstructs the path form start to end not inclusive.
     const path = [];
