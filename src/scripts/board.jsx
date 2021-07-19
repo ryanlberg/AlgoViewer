@@ -14,10 +14,12 @@ const GRID_WIDTH = Math.floor((window.innerWidth-NODESIZE*2) / NODESIZE);
 const ROWEND = GRID_HEIGHT;
 const COLEND = GRID_WIDTH;
 
-let NODEROWSTART = 0;
-let NODECOLSTART = 0;
-let NODEROWEND = ROWEND - 1;
-let NODECOLEND = COLEND -1;
+let NODEROWSTART = Math.floor(GRID_HEIGHT / 2);
+let NODECOLSTART = Math.floor(GRID_WIDTH / 2 / 2);
+let NODEROWEND = NODEROWSTART;
+let NODECOLEND = NODECOLSTART * 3;
+console.log(NODEROWSTART);
+console.log(NODECOLSTART)
 let timeouts = []
 window.onresize = () => { window.location.reload(); };
 
@@ -49,7 +51,7 @@ export default class Board extends Component {
       timeouts = []
     }
     
-    resetState = (algo) => {
+    resetState = (algo, fromWall) => {
       if (timeouts.length > 0) {
         
         for(let i = 0; i < timeouts.length; i++) {
@@ -63,6 +65,9 @@ export default class Board extends Component {
             continue;
           }
           const id = String(i) + '-' + String(j);
+          if(fromWall) {
+            this.state.grid[i][j].wall = false;
+          }
           if (!this.state.grid[i][j].wall) {
             document.getElementById(id).className = 'square';
           }
@@ -77,7 +82,7 @@ export default class Board extends Component {
     }
 
     runSelected = () => {
-      this.resetState(this.state.strategy)
+      this.resetState(this.state.strategy, false)
       const searchOrder = runGraphType(this.state.grid, this.state.strategy, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND]);
       this.animate(searchOrder[0], searchOrder[1]);
     }
@@ -99,8 +104,6 @@ export default class Board extends Component {
       }
     }
     
-    
-
     animatePath = (path) => {
       for (let j = 0; j < path.length; j++) {
         let pathTimer = setTimeout(() => {
@@ -111,16 +114,28 @@ export default class Board extends Component {
         timeouts.push(pathTimer)
       }
     }
+
+    animateWall = (wall) => {
+      for (let j = 0; j < wall.length; j++) {
+        let pathTimer = setTimeout(() => {
+          const wallSquare = wall[j];
+          wallSquare.wall = true;
+          const id = String(wallSquare.i) + '-' + String(wallSquare.j);
+          document.getElementById(id).className = 'square square-wall';
+        }, 20 * j);
+        timeouts.push(pathTimer)
+      }
+    }
      
     handleDown = (i, j) => {
       if (i === NODEROWSTART && j === NODECOLSTART) {
-        this.resetState(this.state.strategy);
+        this.resetState(this.state.strategy, false);
         this.setState({
           downClick: true,
           startClicked: true
         })
       } else if (i === NODEROWEND && j === NODECOLEND) {
-        this.resetState(this.state.strategy);
+        this.resetState(this.state.strategy, false);
         this.setState({
           downClick: true,
           endClicked: true
@@ -174,11 +189,9 @@ export default class Board extends Component {
     }
 
     mazify = (type) => {
-      this.resetState(this.state.strategy);
-      let maze = new Maze(this.state.grid, type).getMaze();
-      this.setState({
-        grid: maze,
-      })
+      this.resetState(this.state.strategy, true);
+      let maze = new Maze(this.state.grid, type);
+      this.animateWall(maze.getMaze());
     }
    
     render() {
