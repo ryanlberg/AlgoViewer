@@ -5,6 +5,8 @@ import { Maze } from './maze/maze'
 import Square from './square';
 import MyNavbar from './navbar.jsx';
 import SubBanner from './subbanner.jsx';
+import Legend from './legend.jsx';
+
 
 const NODESIZE = 34;
 const NAVBARSIZE = 75;
@@ -235,10 +237,12 @@ export default class Board extends Component {
                     );
                   })}
                 </div>
+                
               );
             })}
           </div>
         </div>
+        
       )
   }
 }

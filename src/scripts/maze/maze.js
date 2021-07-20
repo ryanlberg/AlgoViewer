@@ -66,7 +66,7 @@ class HorizontalVerticalMaze {
         if (type === "vertical") {
             let mid = Math.floor((lowWidth + highWidth)/2)
             if ((highWidth - lowWidth) > 2) {
-
+                
                 let midHeight = Math.floor((lowHeight+highHeight)/2);
                 let topRandom = Math.floor(Math.random() * (midHeight - lowHeight)) + lowHeight;
                 let botRandom = Math.floor(Math.random() * (highHeight - midHeight)) + midHeight; 

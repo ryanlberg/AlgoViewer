@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import Legend from './legend.jsx';
+import '../css/subbanner.css';
 
 export default class SubBanner extends Component {
     constructor(props) {
@@ -25,7 +27,10 @@ export default class SubBanner extends Component {
     render() {
         return(
             <div >
-                <div>{this.getText()}</div>
+                <div class="subbanner">{this.getText()}</div>
+                <div>
+                    <Legend></Legend>
+                </div>
             </div>
         )
     }
