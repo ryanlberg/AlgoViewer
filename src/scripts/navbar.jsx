@@ -10,6 +10,7 @@ export default class MyNavbar extends Component {
     constructor(props) {
       super(props);
       this.state = {
+        algo: props.algo,
         runSelected: props.runSelected,
         resetState: props.resetState,
         mazify: props.mazify
@@ -19,34 +20,47 @@ export default class MyNavbar extends Component {
     render () {
       return (
         
-      <Navbar bg="dark" variant="dark">
-        <div className="navbar-brand-center">AlgoView</div>
-        <Nav>
-          <Dropdown className="btn" as={ButtonGroup}>
-            <Button className='btn-info'>Choose an Algorithm!</Button>
+      <Navbar bg="dark">
+        <div className="navbar-brand-center">Algo-View</div>
+       
+        <Nav class="btn btn-toolbar">
+          
+          <Dropdown as={ButtonGroup}>
+            
+            <Button className='btn btn-info'>Choose an Algorithm!</Button>
 
-            <Dropdown.Toggle className='btn-info'  id="dropdown-split-basic" />
+            <Dropdown.Toggle className='btn btn-info'  id="dropdown-split-basic" />
 
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => this.state.resetState("BFS")}>BFS</Dropdown.Item>
-              <Dropdown.Item onClick={() => this.state.resetState("DFS")}>DFS</Dropdown.Item>
-              <Dropdown.Item onClick={() => this.state.resetState("ASTAR")}>ASTAR</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("BFS", false)}>BFS</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("DFS", false)}>DFS</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("ASTAR", false)}>ASTAR</Dropdown.Item>
             </Dropdown.Menu>
+
           </Dropdown>
-          <Dropdown className="btn" as={ButtonGroup}>
-            <Button className='btn-info' variant="success">Maze Type!</Button>
-
-            <Dropdown.Toggle className='btn-info'  id="dropdown-split-basic" />
-
-            <Dropdown.Menu>
+          
+         
+          <Dropdown class="nav-item" as={ButtonGroup}>
+            
+            <Button className='btn btn-info' variant="success">Maze Type!</Button>
+           
+            <Dropdown.Toggle className='btn btn-info'  id="dropdown-split-basic" />
+           
+           <Dropdown.Menu>
               <Dropdown.Item onClick={() => this.state.mazify("vertical")}>Vertical Split</Dropdown.Item>
               <Dropdown.Item onClick={() => this.state.mazify("horizontal")}>Horizontal Split</Dropdown.Item>
               <Dropdown.Item onClick={() => this.state.mazify("random")}>Random Maze</Dropdown.Item>
             </Dropdown.Menu>
-          </Dropdown>
-          <Button className="btn-info" id="simulate" onClick={() => this.props.runSelected() }> Lets See it!</Button>
           
-          </Nav>
+          </Dropdown>
+          
+         
+            <Button className="btn btn-success" id="simulate" onClick={() => this.props.runSelected() }>See it!</Button>
+        
+            <Button className="btn btn-danger" onClick={() => this.state.resetState(this.state.algo, true) }>RESET</Button>
+          
+         </Nav>
+        
       </Navbar>
       )
         

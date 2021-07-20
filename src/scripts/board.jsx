@@ -198,7 +198,7 @@ export default class Board extends Component {
       //const { grid } = this.state;  
       return (
         <div>
-         <MyNavbar runSelected={this.runSelected} resetState={this.resetState} mazify={this.mazify}></MyNavbar>
+         <MyNavbar algo={this.state.strategy} runSelected={this.runSelected} resetState={this.resetState} mazify={this.mazify}></MyNavbar>
           <SubBanner selected={this.state.strategy}></SubBanner>
           <div className='gridcol'>
             {this.state.grid.map((row, id) => {
