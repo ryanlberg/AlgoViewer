@@ -12,7 +12,7 @@ const NODESIZE = 34;
 const NAVBARSIZE = 75;
 
 
-const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE * 2 - NAVBARSIZE) / NODESIZE);
+const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE - NAVBARSIZE * 2 - NAVBARSIZE) / NODESIZE);
 const GRID_WIDTH = Math.floor((window.innerWidth-NODESIZE*2) / NODESIZE);
 const ROWEND = GRID_HEIGHT;
 const COLEND = GRID_WIDTH;
