@@ -9,6 +9,7 @@ import SubBanner from './subbanner.jsx';
 const NODESIZE = 34;
 const NAVBARSIZE = 75;
 
+
 const GRID_HEIGHT = Math.floor( (window.innerHeight - NODESIZE * 2 - NAVBARSIZE) / NODESIZE);
 const GRID_WIDTH = Math.floor((window.innerWidth-NODESIZE*2) / NODESIZE);
 const ROWEND = GRID_HEIGHT;
@@ -18,9 +19,12 @@ let NODEROWSTART = Math.floor(GRID_HEIGHT / 2);
 let NODECOLSTART = Math.floor(GRID_WIDTH / 2 / 2);
 let NODEROWEND = NODEROWSTART;
 let NODECOLEND = NODECOLSTART * 3;
-console.log(NODEROWSTART);
-console.log(NODECOLSTART)
+
+let last_clicked_i = -1;
+let last_clicked_j = -1;
+
 let timeouts = []
+
 window.onresize = () => { window.location.reload(); };
 
 export default class Board extends Component {
@@ -143,6 +147,8 @@ export default class Board extends Component {
         
       } else {
           const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, this.state.startClicked, this.state.endClicked)
+          last_clicked_i = i;
+          last_clicked_j = j;
           this.setState({
             grid: updatedGrid,
             downClick: true
@@ -175,6 +181,13 @@ export default class Board extends Component {
               grid: updatedGrid,
             })
           }
+      } else if (downClicked && !(i == last_clicked_i && last_clicked_j == j)) {
+        const updatedGrid = generateGridWithNewNode(this.state.grid, [NODEROWSTART, NODECOLSTART], [NODEROWEND, NODECOLEND], i, j, startClicked, endClicked)
+        last_clicked_i = i;
+        last_clicked_j = j;
+        this.setState({
+          grid: updatedGrid,
+        })
       }
     }
   

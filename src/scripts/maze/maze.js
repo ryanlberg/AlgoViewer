@@ -43,6 +43,25 @@ class HorizontalVerticalMaze {
         }
     }
 
+    isValid(i, j) {
+        return i >= 0 && i < this.gridWidth && j >= 0 && j < this.gridHeight;
+    }
+
+    nextToStartOrEnd(i, j) {
+        let around = [[0, 1], [0,-1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, -1], [-1, 1]];
+        for(let k = 0; k < around.length; k++) {
+            let cur = around[k];
+            let newi = i + cur[0]
+            let newj = j + cur[1]
+            if(this.isValid(newi, newj) && this.grid[newi][newj].start || this.grid[newi][newj].end) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+
     mazify(lowWidth, highWidth, lowHeight, highHeight, type) {
         if (type === "vertical") {
             let mid = Math.floor((lowWidth + highWidth)/2)
@@ -54,7 +73,7 @@ class HorizontalVerticalMaze {
 
                 for(let i = lowHeight; i < highHeight; i++) {
                     let curNode = this.grid[i][mid];
-                    if(!curNode.start && !curNode.end && i != topRandom && i != botRandom) {
+                    if(!curNode.start && !curNode.end && i != topRandom && i != botRandom && !this.nextToStartOrEnd(i, mid)) {
                         this.searched.push(curNode);
                     } 
                 }
@@ -76,7 +95,7 @@ class HorizontalVerticalMaze {
 
                 for(let i = lowWidth; i < highWidth; i++) {
                     let curNode = this.grid[mid][i];
-                    if(!curNode.start && !curNode.end && i != topRandom && i != botRandom) {
+                    if(!curNode.start && !curNode.end && i != topRandom && i != botRandom && !this.nextToStartOrEnd(mid, i)) {
                         this.searched.push(curNode);
                     } 
                 }
@@ -105,6 +124,23 @@ class RandomMaze {
         return this.searched;
     }
 
+    isValid(i, j) {
+        return i >= 0 && i < this.gridWidth && j >= 0 && j < this.gridHeight;
+    }
+
+    nextToStartOrEnd(i, j) {
+        let around = [[0, 1], [0,-1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, -1], [-1, 1]];
+        for(let k = 0; k < around.length; k++) {
+            let cur = around[k];
+            let newi = i + cur[0]
+            let newj = j + cur[1]
+            if(this.isValid(newi, newj) && this.grid[newi][newj].start || this.grid[newi][newj].end) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     addTopBottomSides() {
         for(let i = 0; i < this.gridWidth; i++) {
             this.searched.push(this.grid[0][i]);
@@ -123,7 +159,7 @@ class RandomMaze {
                 for(let i = lowHeight; i < highHeight; i++) {
                     let curNode = this.grid[i][mid];
                     let chance = Math.random();
-                    if(!curNode.start && !curNode.end && chance <= .55) {
+                    if(!curNode.start && !curNode.end && chance <= .55 && !this.nextToStartOrEnd(i, mid)) {
                         this.searched.push(curNode);
                     }
                 }
@@ -139,7 +175,7 @@ class RandomMaze {
                 for(let i = lowWidth; i < highWidth; i++) {
                     let curNode = this.grid[mid][i];
                     let chance = Math.random();
-                    if(!curNode.start && !curNode.end && chance < .55) {
+                    if(!curNode.start && !curNode.end && chance < .55 && !this.nextToStartOrEnd(mid, i)) {
                         this.searched.push(curNode);
                     }
                 }
