@@ -32,9 +32,9 @@ export default class MyNavbar extends Component {
             <Dropdown.Toggle className='btn btn-info'  id="dropdown-split-basic" />
 
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => this.state.resetState("BFS", false)}>BFS</Dropdown.Item>
-              <Dropdown.Item onClick={() => this.state.resetState("DFS", false)}>DFS</Dropdown.Item>
-              <Dropdown.Item onClick={() => this.state.resetState("ASTAR", false)}>ASTAR</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("BFS", false)}>Breadth-First Search</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("DFS", false)}>Depth-First Search</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.state.resetState("ASTAR", false)}>A*STAR Search</Dropdown.Item>
             </Dropdown.Menu>
 
           </Dropdown>
